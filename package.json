@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node server.js",
+    "server": "nodemon server.js",
     "client": "cd client && npm start && cd ..",
     "start": "npm run server"
   },
@@ -26,5 +26,18 @@
     "url": "https://github.com/jesseokeya/byteMarshall/issues"
   },
   "homepage": "https://github.com/jesseokeya/byteMarshall#readme",
-  "dependencies": {}
+  "dependencies": {
+    "dotenv": "^6.2.0",
+    "jwt-decode": "^2.2.0",
+    "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "koa2-cors": "^2.0.6",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.4.11",
+    "nodemon": "^1.18.10",
+    "shelljs": "^0.8.3"
+  }
 }

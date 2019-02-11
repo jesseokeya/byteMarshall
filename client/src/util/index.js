@@ -4,6 +4,6 @@ const languageTemplates = {
     golang: `package main\n\nimport "fmt"\n\nfunc main() {\n\tfmt.Println("Hello World!");\n}`,
 }
 
-const getServer = () => window.location.hostname.includes('localhost') ? '' : ''
+const getServer = () => window.location.hostname.includes('localhost') ? 'http://localhost:8080' : ''
 
 export { languageTemplates, getServer }
