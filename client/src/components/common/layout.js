@@ -37,9 +37,6 @@ themes.forEach(theme => {
     require(`brace/theme/${theme}`);
 });
 
-const defaultValue = [`const welcome = 'Hello World!';
-console.log(welcome);`, 'Output: Hello World!'];
-
 class Layout extends Component {
     onLoad(editor) {
         const sp = editor.$editors[1]
@@ -50,16 +47,6 @@ class Layout extends Component {
         this.setState({
             value: newValue,
         });
-    }
-
-    onSelectionChange(newValue, event) {
-        console.log('select-change', newValue);
-        console.log('select-change-event', event);
-    }
-
-    onCursorChange(newValue, event) {
-        console.log('cursor-change', newValue);
-        console.log('cursor-change-event', event);
     }
 
     setTheme(e) {
@@ -90,7 +77,7 @@ class Layout extends Component {
         this.state = {
             splits: 2,
             orientation: 'beside',
-            value: defaultValue,
+            value: [],
             theme: 'solarized_dark',
             mode: 'javascript',
             enableBasicAutocompletion: true,
@@ -114,10 +101,16 @@ class Layout extends Component {
         const targets = document.getElementsByClassName('ace_editor')
         const target = targets[2]
         target.classList.add('disable-div')
+        const defaultValue = [
+            `const welcome = 'Hello World!';\nconsole.log(welcome);`, 
+            this.props.compiled.result || 'Output: Hello World!'
+        ];
+        this.setState({ value: defaultValue })
     }
 
     handleCompile(e) {
-        console.log(e)
+        const { mode, value } = this.state;
+        this.props.compileCode({ language: mode, syntax: value[0] })
     }
 
     render() {
@@ -255,6 +248,7 @@ class Layout extends Component {
                                 <i className='fas fa-check'></i>
                             </span>
                         </button>
+                        {this.props.compiled.loading && <div className="loader move-right"></div>}
                     </div>
                     <h2 className='text-bold'>Editor</h2>
                     <SplitAceEditor
@@ -266,7 +260,6 @@ class Layout extends Component {
                         onLoad={this.onLoad}
                         debounceChangePeriod={1000}
                         onChange={this.onChange}
-                        onSelectionChange={this.onSelectionChange}
                         fontSize={this.state.fontSize}
                         useWorker={this.state.useWorker}
                         height='80vw'
@@ -296,7 +289,7 @@ Layout.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    compiled: state.compile
+    compiled: state.compiled
 });
   
 export default connect(mapStateToProps, { compileCode })(Layout)

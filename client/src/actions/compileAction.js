@@ -1,4 +1,4 @@
-import { axios } from 'axios';
+import axios from 'axios';
 import { COMPILE, LOADING } from "./types";
 import { getServer } from "../util";
 const server = getServer();
@@ -10,7 +10,7 @@ export const compileCode = (payload) => dispatch => {
         .then(res =>
             dispatch({
                 type: COMPILE,
-                payload: res.data
+                payload: res.data || ''
             })
         ).catch(_ =>
             dispatch({
