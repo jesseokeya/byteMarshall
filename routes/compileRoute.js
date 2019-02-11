@@ -16,10 +16,17 @@ class CompileRouter extends Router {
 
     async compile(ctx) {
         try {
-            console.log(ctx.body)
             const response = await this.compileService.compile(ctx.request.body)
-            console.log(ctx)
+            ctx.body = { 
+                stdout: response.stdout,
+                stderr: response.stderr || '',
+                code: response.code || 1
+            }
         } catch (err) {
+            ctx.body = {
+                code: 0,
+                stderr: err.toString() || '',
+            }
             throw err
         }
     }

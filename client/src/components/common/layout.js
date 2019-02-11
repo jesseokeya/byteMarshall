@@ -3,7 +3,7 @@ import { split as SplitAceEditor } from 'react-ace';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { languageTemplates } from '../../util';
-import { compileCode  } from '../../actions/compileAction';
+import { compileCode } from '../../actions/compileAction';
 import 'brace/ext/language_tools';
 
 import 'brace/mode/jsx';
@@ -82,6 +82,7 @@ class Layout extends Component {
             mode: 'javascript',
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,
+            laoding: false,
             fontSize: 14,
             showGutter: true,
             showPrintMargin: true,
@@ -95,6 +96,7 @@ class Layout extends Component {
         this.onChange = this.onChange.bind(this);
         this.setBoolean = this.setBoolean.bind(this);
         this.setOrientation = this.setOrientation.bind(this);
+        this.handleCompile = this.handleCompile.bind(this)
     }
 
     componentDidMount() {
@@ -102,19 +104,31 @@ class Layout extends Component {
         const target = targets[2]
         target.classList.add('disable-div')
         const defaultValue = [
-            `const welcome = 'Hello World!';\nconsole.log(welcome);`, 
+            `const welcome = 'Hello World!';\nconsole.log(welcome);`,
             this.props.compiled.result || 'Output: Hello World!'
         ];
         this.setState({ value: defaultValue })
+        this.setState({ loading: this.props.compiled.loading })
     }
 
-    handleCompile(e) {
-        const { mode, value } = this.state;
-        this.props.compileCode({ language: mode, syntax: value[0] })
+    componentWillReceiveProps(nextProps) {
+        this.setState({ loading: nextProps.compiled.loading })
+        const output = nextProps.compiled.result.stdout && nextProps.compiled.result.stdout.length > 0 
+                        ? `Output: ${nextProps.compiled.result.stdout}`
+                        : `${nextProps.compiled.result.stderr || 'Something went wrong!. Check your syntax'}`
+        this.setState({ 
+            value: [this.state.value[0], output] 
+        })
+    }
+
+    handleCompile() {
+        this.setState({ loading: true }, _ => {
+            const { mode, value } = this.state;
+            this.props.compileCode({ language: mode, syntax: value[0] })
+        })
     }
 
     render() {
-        console.log(this.props)
         return (
             <div className='columns'>
                 <div className='column'>
@@ -242,13 +256,13 @@ class Layout extends Component {
                 </div>
                 <div className='examples column'>
                     <div className='text-center'>
-                        <button onClick={this.handleCompile.bind(this)} className='button is-primary is-rounded'>
+                        <button onClick={this.handleCompile} className='button is-primary is-rounded'>
                             <span className='text-bold'>Run</span>
                             <span className='icon is-small'>
                                 <i className='fas fa-check'></i>
                             </span>
                         </button>
-                        {this.props.compiled.loading && <div className="loader move-right"></div>}
+                        {this.state.loading && <div className="loader move-right"></div>}
                     </div>
                     <h2 className='text-bold'>Editor</h2>
                     <SplitAceEditor
@@ -291,5 +305,5 @@ Layout.propTypes = {
 const mapStateToProps = state => ({
     compiled: state.compiled
 });
-  
+
 export default connect(mapStateToProps, { compileCode })(Layout)
