@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { split as SplitAceEditor } from 'react-ace';
-import { languageTemplates } from '../../util/'
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { languageTemplates } from '../../util';
+import { compileCode  } from '../../actions/compileAction';
 import 'brace/ext/language_tools';
 
 import 'brace/mode/jsx';
@@ -90,13 +93,13 @@ class Layout extends Component {
             value: defaultValue,
             theme: 'solarized_dark',
             mode: 'javascript',
-            enableBasicAutocompletion: false,
-            enableLiveAutocompletion: false,
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
             fontSize: 14,
             showGutter: true,
             showPrintMargin: true,
             highlightActiveLine: true,
-            enableSnippets: false,
+            enableSnippets: true,
             showLineNumbers: true,
             useWorker: false
         };
@@ -118,14 +121,15 @@ class Layout extends Component {
     }
 
     render() {
+        console.log(this.props)
         return (
-            <div className="columns">
-                <div className="column">
-                    <div className="field">
+            <div className='columns'>
+                <div className='column'>
+                    <div className='field'>
                         <label>Mode:</label>
-                        <p className="control">
-                            <span className="select">
-                                <select name="mode" onChange={this.setMode} value={this.state.mode}>
+                        <p className='control'>
+                            <span className='select'>
+                                <select name='mode' onChange={this.setMode} value={this.state.mode}>
                                     {languages.map(lang => (
                                         <option key={lang} value={lang}>
                                             {lang}
@@ -136,11 +140,11 @@ class Layout extends Component {
                         </p>
                     </div>
 
-                    <div className="field">
+                    <div className='field'>
                         <label>Theme:</label>
-                        <p className="control">
-                            <span className="select">
-                                <select name="Theme" onChange={this.setTheme} value={this.state.theme}>
+                        <p className='control'>
+                            <span className='select'>
+                                <select name='Theme' onChange={this.setTheme} value={this.state.theme}>
                                     {themes.map(lang => (
                                         <option key={lang} value={lang}>
                                             {lang}
@@ -151,11 +155,11 @@ class Layout extends Component {
                         </p>
                     </div>
 
-                    <div className="field">
+                    <div className='field'>
                         <label>Orientation:</label>
-                        <p className="control">
-                            <span className="select">
-                                <select name="orientation" onChange={this.setOrientation} value={this.state.orientation}>
+                        <p className='control'>
+                            <span className='select'>
+                                <select name='orientation' onChange={this.setOrientation} value={this.state.orientation}>
                                     {['beside', 'below'].map(lang => (
                                         <option key={lang} value={lang}>
                                             {lang}
@@ -165,77 +169,77 @@ class Layout extends Component {
                             </span>
                         </p>
                     </div>
-                    <div className="field">
-                        <p className="control">
-                            <label className="checkbox">
+                    <div className='field'>
+                        <p className='control'>
+                            <label className='checkbox'>
                                 <input
-                                    type="checkbox"
+                                    type='checkbox'
                                     checked={this.state.enableBasicAutocompletion}
                                     onChange={e => this.setBoolean('enableBasicAutocompletion', e.target.checked)}
                                 /> Enable Basic Autocomplete
                            </label>
                         </p>
                     </div>
-                    <div className="field">
-                        <p className="control">
-                            <label className="checkbox">
+                    <div className='field'>
+                        <p className='control'>
+                            <label className='checkbox'>
                                 <input
-                                    type="checkbox"
+                                    type='checkbox'
                                     checked={this.state.enableLiveAutocompletion}
                                     onChange={e => this.setBoolean('enableLiveAutocompletion', e.target.checked)}
                                 /> Enable Live Autocomplete
                            </label>
                         </p>
                     </div>
-                    <div className="field">
-                        <p className="control">
-                            <label className="checkbox">
+                    <div className='field'>
+                        <p className='control'>
+                            <label className='checkbox'>
                                 <input
-                                    type="checkbox"
+                                    type='checkbox'
                                     checked={this.state.showGutter}
                                     onChange={e => this.setBoolean('showGutter', e.target.checked)}
                                 /> Show Gutter
                            </label>
                         </p>
                     </div>
-                    <div className="field">
-                        <p className="control">
-                            <label className="checkbox">
+                    <div className='field'>
+                        <p className='control'>
+                            <label className='checkbox'>
                                 <input
-                                    type="checkbox"
+                                    type='checkbox'
                                     checked={this.state.showPrintMargin}
                                     onChange={e => this.setBoolean('showPrintMargin', e.target.checked)}
                                 /> Show Print Margin
                            </label>
                         </p>
                     </div>
-                    <div className="field">
-                        <p className="control">
-                            <label className="checkbox">
+                    <div className='field'>
+                        <p className='control'>
+                            <label className='checkbox'>
                                 <input
-                                    type="checkbox"
+                                    type='checkbox'
                                     checked={this.state.highlightActiveLine}
                                     onChange={e => this.setBoolean('highlightActiveLine', e.target.checked)}
                                 /> Highlight Active Line
                            </label>
                         </p>
                     </div>
-                    <div className="field">
-                        <p className="control">
-                            <label className="checkbox">
+                    <div className='field'>
+                        <p className='control'>
+                            <label className='checkbox'>
                                 <input
-                                    type="checkbox"
+                                    type='checkbox'
                                     checked={this.state.enableSnippets}
                                     onChange={e => this.setBoolean('enableSnippets', e.target.checked)}
                                 /> Enable Snippets
                            </label>
                         </p>
                     </div>
-                    <div className="field">
-                        <p className="control">
-                            <label className="checkbox">
+                    <div className='field'>
+                        <p className='control'>
+                            <label className='checkbox'>
                                 <input
-                                    type="checkbox"
+                                    type='checkbox'
                                     checked={this.state.showLineNumbers}
                                     onChange={e => this.setBoolean('showLineNumbers', e.target.checked)}
                                 /> Show Line Numbers
@@ -243,30 +247,30 @@ class Layout extends Component {
                         </p>
                     </div>
                 </div>
-                <div className="examples column">
-                    <div className="text-center">
-                        <button onClick={this.handleCompile.bind(this)} className="button is-primary is-rounded">
-                            <span className="text-bold">Run</span>
-                            <span className="icon is-small">
-                                <i className="fas fa-check"></i>
+                <div className='examples column'>
+                    <div className='text-center'>
+                        <button onClick={this.handleCompile.bind(this)} className='button is-primary is-rounded'>
+                            <span className='text-bold'>Run</span>
+                            <span className='icon is-small'>
+                                <i className='fas fa-check'></i>
                             </span>
                         </button>
                     </div>
-                    <h2 className="text-bold">Editor</h2>
+                    <h2 className='text-bold'>Editor</h2>
                     <SplitAceEditor
                         mode={this.state.mode}
                         orientation={this.state.orientation}
                         splits={this.state.splits}
                         theme={this.state.theme}
-                        name="target"
+                        name='target'
                         onLoad={this.onLoad}
                         debounceChangePeriod={1000}
                         onChange={this.onChange}
                         onSelectionChange={this.onSelectionChange}
                         fontSize={this.state.fontSize}
                         useWorker={this.state.useWorker}
-                        height="80vw"
-                        width="80vw"
+                        height='80vw'
+                        width='80vw'
                         showPrintMargin={this.state.showPrintMargin}
                         showGutter={this.state.showGutter}
                         highlightActiveLine={this.state.highlightActiveLine}
@@ -286,4 +290,13 @@ class Layout extends Component {
     }
 }
 
-export default Layout
+Layout.propTypes = {
+    compileCode: PropTypes.func.isRequired,
+    compiled: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+    compiled: state.compile
+});
+  
+export default connect(mapStateToProps, { compileCode })(Layout)
