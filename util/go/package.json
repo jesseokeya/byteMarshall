@@ -1,0 +1,73 @@
+{
+  "_from": "golang@^0.1.5-stable",
+  "_id": "golang@0.1.5-stable",
+  "_inBundle": false,
+  "_integrity": "sha512-s8fHqEm/0gA/EhxEEzEwGNgi7sT+VeK3fD2Si3HdY7uHs301W2Tq2kRKIrijPNphX++AWIbgX6+oYGT69a0Tgg==",
+  "_location": "/golang",
+  "_phantomChildren": {
+    "glob": "7.1.3",
+    "interpret": "1.2.0",
+    "rechoir": "0.6.2"
+  },
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "golang@^0.1.5-stable",
+    "name": "golang",
+    "escapedName": "golang",
+    "rawSpec": "^0.1.5-stable",
+    "saveSpec": null,
+    "fetchSpec": "^0.1.5-stable"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/golang/-/golang-0.1.5-stable.tgz",
+  "_shasum": "74f34269dce049e5faa096bb6235c1f440d20d22",
+  "_spec": "golang@^0.1.5-stable",
+  "_where": "/Users/jesseokeya/Downloads/node exec",
+  "author": {
+    "name": "Daksh Miglani",
+    "email": "hello@dak.sh",
+    "url": "https://dak.sh"
+  },
+  "bugs": {
+    "url": "https://github.com/DakshMiglani/node-golang/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "hasbin": "^1.2.3",
+    "shelljs": "^0.7.8",
+    "write": "^1.0.1"
+  },
+  "deprecated": false,
+  "description": "GoLang Bridge for Node.js",
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2"
+  },
+  "homepage": "https://github.com/DakshMiglani/node-golang#readme",
+  "keywords": [
+    "Golang",
+    "GoLang",
+    "golang",
+    "go",
+    "bridge",
+    "golang",
+    "bride",
+    "golang",
+    "node.js"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "golang",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DakshMiglani/node-golang.git"
+  },
+  "scripts": {
+    "test": "mocha tests/**/**.spec.js"
+  },
+  "version": "0.1.5-stable"
+}

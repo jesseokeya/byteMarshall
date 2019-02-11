@@ -1,0 +1,29 @@
+{
+  "name": "bytemarshall",
+  "version": "1.0.0",
+  "description": "A run time environment for various programming languages",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node server.js",
+    "client": "cd client && npm start && cd ..",
+    "start": "npm run server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesseokeya/byteMarshall.git"
+  },
+  "keywords": [
+    "nodejs",
+    "linux",
+    "go",
+    "python",
+    "node"
+  ],
+  "author": "Jesse Okeya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jesseokeya/byteMarshall/issues"
+  },
+  "homepage": "https://github.com/jesseokeya/byteMarshall#readme"
+}
