@@ -1,3 +1,15 @@
 html {
     background-color: #E5E7E9;
 }
+
+.text-center {
+    text-align: center;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.disable-div {
+    pointer-events: none;
+}
