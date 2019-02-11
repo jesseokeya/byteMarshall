@@ -25,5 +25,6 @@
   "bugs": {
     "url": "https://github.com/jesseokeya/byteMarshall/issues"
   },
-  "homepage": "https://github.com/jesseokeya/byteMarshall#readme"
+  "homepage": "https://github.com/jesseokeya/byteMarshall#readme",
+  "dependencies": {}
 }
