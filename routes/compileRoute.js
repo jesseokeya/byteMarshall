@@ -16,6 +16,7 @@ class CompileRouter extends Router {
 
     async compile(ctx) {
         try {
+            console.log(ctx.request.body)
             const response = await this.compileService.compile(ctx.request.body)
             ctx.body = { 
                 stdout: response.stdout,

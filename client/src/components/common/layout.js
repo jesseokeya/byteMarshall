@@ -89,7 +89,8 @@ class Layout extends Component {
             highlightActiveLine: true,
             enableSnippets: true,
             showLineNumbers: true,
-            useWorker: false
+            useWorker: false,
+            hasSaved: false
         };
         this.setTheme = this.setTheme.bind(this);
         this.setMode = this.setMode.bind(this);
@@ -113,19 +114,29 @@ class Layout extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: nextProps.compiled.loading })
-        const output = nextProps.compiled.result.stdout && nextProps.compiled.result.stdout.length > 0 
-                        ? `Output: ${nextProps.compiled.result.stdout}`
-                        : `${nextProps.compiled.result.stderr || 'Something went wrong!. Check your syntax'}`
-        this.setState({ 
-            value: [this.state.value[0], output] 
+        const output = nextProps.compiled.result.stdout && nextProps.compiled.result.stdout.length > 0
+            ? `Output: ${nextProps.compiled.result.stdout}`
+            : `${nextProps.compiled.result.stderr || 'Something went wrong!. Check your syntax'}`
+        this.setState({
+            value: [this.state.value[0], output]
         })
     }
 
     handleCompile() {
-        this.setState({ loading: true }, _ => {
-            const { mode, value } = this.state;
-            this.props.compileCode({ language: mode, syntax: value[0] })
-        })
+        this.setState({ loading: true })
+        this.setState({ hasSaved: true })
+        setTimeout(() => this.setState({ hasSaved: false }), 3000)
+        this.props.compileCode({ language: this.state.mode, syntax: this.state.value[0] })
+    }
+
+    notifyUser() {
+        return (<div>
+            <br />
+            <div className="notification is-primary">
+                <button className="delete"></button>
+                <strong>Code was successfully saved.</strong>
+            </div>
+        </div>)
     }
 
     render() {
@@ -263,6 +274,7 @@ class Layout extends Component {
                             </span>
                         </button>
                         {this.state.loading && <div className="loader move-right"></div>}
+                        {this.state.hasSaved && this.notifyUser()}
                     </div>
                     <h2 className='text-bold'>Editor</h2>
                     <SplitAceEditor
@@ -282,6 +294,7 @@ class Layout extends Component {
                         showGutter={this.state.showGutter}
                         highlightActiveLine={this.state.highlightActiveLine}
                         value={this.state.value}
+                        scrollPastEnd={true}
                         setOptions={{
                             displayIndentGuides: false,
                             enableBasicAutocompletion: this.state.enableBasicAutocompletion,
