@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { split as SplitAceEditor } from 'react-ace';
+import { languageTemplates } from '../../util/'
 import 'brace/ext/language_tools';
 
 import 'brace/mode/jsx';
@@ -7,7 +8,6 @@ import 'brace/ext/searchbox';
 
 const languages = [
     'javascript',
-    'java',
     'python',
     'golang'
 ];
@@ -34,12 +34,8 @@ themes.forEach(theme => {
     require(`brace/theme/${theme}`);
 });
 
-const defaultValue = [
-    `function onLoad(editor) {
-    console.log("i've loaded");
-  }`,
-    'Output: ',
-];
+const defaultValue = [`const welcome = 'Hello World!';
+console.log(welcome);`, 'Output: Hello World!'];
 
 class Layout extends Component {
     onLoad(editor) {
@@ -48,7 +44,6 @@ class Layout extends Component {
     }
 
     onChange(newValue) {
-        console.log('change', newValue);
         this.setState({
             value: newValue,
         });
@@ -71,26 +66,13 @@ class Layout extends Component {
     }
 
     setMode(e) {
-        this.setState({
-            mode: e.target.value,
-        });
+        this.setState({ mode: e.target.value });
+        this.setState({ value: [languageTemplates[e.target.value], this.state.value[1]] })
     }
 
     setBoolean(name, value) {
         this.setState({
             [name]: value,
-        });
-    }
-
-    setFontSize(e) {
-        this.setState({
-            fontSize: parseInt(e.target.value, 10),
-        });
-    }
-
-    setSplits(e) {
-        this.setState({
-            splits: parseInt(e.target.value, 10),
         });
     }
 
@@ -121,17 +103,18 @@ class Layout extends Component {
         this.setTheme = this.setTheme.bind(this);
         this.setMode = this.setMode.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.setFontSize = this.setFontSize.bind(this);
         this.setBoolean = this.setBoolean.bind(this);
-        this.setSplits = this.setSplits.bind(this);
         this.setOrientation = this.setOrientation.bind(this);
     }
 
     componentDidMount() {
         const targets = document.getElementsByClassName('ace_editor')
         const target = targets[2]
-        // target.classList.('ace_editor')
         target.classList.add('disable-div')
+    }
+
+    handleCompile(e) {
+        console.log(e)
     }
 
     render() {
@@ -262,12 +245,12 @@ class Layout extends Component {
                 </div>
                 <div className="examples column">
                     <div className="text-center">
-                        <a className="button is-primary is-rounded">
+                        <button onClick={this.handleCompile.bind(this)} className="button is-primary is-rounded">
                             <span className="text-bold">Run</span>
                             <span className="icon is-small">
                                 <i className="fas fa-check"></i>
                             </span>
-                        </a>
+                        </button>
                     </div>
                     <h2 className="text-bold">Editor</h2>
                     <SplitAceEditor

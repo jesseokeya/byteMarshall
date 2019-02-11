@@ -13,3 +13,19 @@ html {
 .disable-div {
     pointer-events: none;
 }
+
+.nav-wrapper {
+    background: #566573; 
+    padding: 10px; 
+}
+
+.nav {
+    margin-left: 15px;
+}
+
+.nav-title {
+    font-size: 20px;
+    margin-left: 5px;
+    margin-top: -10px;
+    color: white;
+}
