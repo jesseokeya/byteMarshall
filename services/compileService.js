@@ -17,7 +17,7 @@ class CompileService {
                     return golang.run(syntax)
             }
         } catch (err) {
-            throw err
+            return err
         }
     }
 }
