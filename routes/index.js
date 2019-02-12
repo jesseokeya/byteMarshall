@@ -7,7 +7,8 @@ const { CompileService } = require('../services')
 
 module.exports = (app) => {
    const handlers = [
-       new CompileRoute({ CompileService })
+       new CompileRoute({ CompileService }),
+       new UserRoute()
    ]
    handlers.forEach(handler => handler.init(app))
 } 

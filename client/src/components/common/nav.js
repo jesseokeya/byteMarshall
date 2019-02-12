@@ -10,17 +10,17 @@ class Nav extends Component {
                             <img src="https://image.flaticon.com/icons/svg/1410/1410345.svg" alt="logo" width="30" height="30" />
                             <b className="nav-title">ByteMarshall</b>
                         </a>
-                        <div id="navbarBasicExample" class="navbar-menu text-right">
+                        <div id="navbarBasicExample" className="navbar-menu text-right">
                             <button className="button is-primary">
                                 <span>Login</span>
-                                <span class="icon">
-                                    <i class="fas fa-sign-in-alt"></i>
+                                <span className="icon">
+                                    <i className="fas fa-sign-in-alt"></i>
                                 </span>
                             </button>
                             <button className="button is-info shift-right">
                                 <span>Signup</span>
-                                <span class="icon">
-                                    <i class="fas fa-sign-out-alt"></i>
+                                <span className="icon">
+                                    <i className="fas fa-sign-out-alt"></i>
                                 </span>
                             </button>
                         </div>

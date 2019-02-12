@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { split as SplitAceEditor } from 'react-ace';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getLanguageTemplates } from '../../util';
+import socketIOClient from "socket.io-client";
+import { getLanguageTemplates, getServer } from '../../util';
 import { compileCode } from '../../actions/compileAction';
 import 'brace/ext/language_tools';
 
@@ -27,6 +28,10 @@ const themes = [
     'solarized_light',
     'terminal',
 ];
+
+const socket = socketIOClient(getServer())
+
+socket.on('connected', data => console.log(data))
 
 languages.forEach(lang => {
     require(`brace/mode/${lang}`);
@@ -65,7 +70,7 @@ class ByteMarshallEditor extends Component {
         this.setOrientation = this.setOrientation.bind(this);
         this.handleCompile = this.handleCompile.bind(this)
     }
-    
+
     onLoad(editor) {
         const sp = editor.$editors[1]
         sp.getSession().setUseWorker(false);
@@ -74,18 +79,18 @@ class ByteMarshallEditor extends Component {
     onChange(newValue) {
         this.setState({
             value: newValue,
-        });
+        }, _ => socket.emit('stateChanged', { ...this.state }))
     }
 
     setTheme(e) {
         this.setState({
             theme: e.target.value,
-        });
+        }, _ => socket.emit('stateChanged', { ...this.state }));
     }
 
     setMode(e) {
         const languageTemplates = getLanguageTemplates()
-        this.setState({ mode: e.target.value });
+        this.setState({ mode: e.target.value }, _ => socket.emit('stateChanged', { ...this.state }));
         this.setState({ value: [languageTemplates[e.target.value], this.state.value[1]] })
     }
 
@@ -98,7 +103,7 @@ class ByteMarshallEditor extends Component {
     setOrientation(e) {
         this.setState({
             orientation: e.target.value,
-        });
+        }, _ => socket.emit('stateChanged', { ...this.state }));
     }
 
     componentDidMount() {
@@ -141,13 +146,23 @@ class ByteMarshallEditor extends Component {
         const output = nextProps.compiled.result.stdout && nextProps.compiled.result.stdout.length > 0
             ? `Output: ${nextProps.compiled.result.stdout}`
             : `${nextProps.compiled.result.stderr || 'Something went wrong!. Check your syntax'}`
-        this.setState({
-            value: [this.state.value[0], output]
+        this.setState({ value: [this.state.value[0], output] }, _ => { 
+            socket.emit('stateChanged', { ...this.state }) 
+            socket.on('updateState', state => {
+                this.setState({ ...state, loading: false, hasSaved: false })
+            })
         })
     }
 
     handleCompile() {
         this.setState({ loading: true })
+        this.updateStore()
+        this.setState({ hasSaved: true })
+        setTimeout(_ => this.setState({ hasSaved: false }), 3000)
+        this.props.compileCode({ language: this.state.mode, syntax: this.state.value[0] })
+    }
+
+    updateStore() {
         let cached = localStorage.getItem('languageTemplates'), cachedTemplates = {}
         if (cached) {
             cached = JSON.parse(cached)
@@ -164,9 +179,6 @@ class ByteMarshallEditor extends Component {
             orientation: this.state.orientation
         }
         localStorage.setItem('settings', JSON.stringify(settings))
-        this.setState({ hasSaved: true })
-        setTimeout(() => this.setState({ hasSaved: false }), 3000)
-        this.props.compileCode({ language: this.state.mode, syntax: this.state.value[0] })
     }
 
     notifyUser() {
