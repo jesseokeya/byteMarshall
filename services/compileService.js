@@ -1,5 +1,4 @@
 const shell = require('shelljs')
-const { PythonShell } = require('python-shell')
 const golang = require('../util/go')
 
 class CompileService {
@@ -13,14 +12,7 @@ class CompileService {
                 case 'javascript':
                     return shell.exec(`node -e "${syntax}"`)
                 case 'python':
-                    return new Promise((resolve, _) => {
-                        PythonShell.runString(syntax, null, (err, results) => {
-                            resolve({ 
-                                stdout: results ? results[0] : '',
-                                stderr: err ? err.toString() : ''
-                            })
-                        })
-                    })
+                    return shell.exec(`python -c "${syntax}"`)
                 case 'golang':
                     return golang.run(syntax)
             }
