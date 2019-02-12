@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { split as SplitAceEditor } from 'react-ace';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { languageTemplates } from '../../util';
+import { getLanguageTemplates } from '../../util';
 import { compileCode } from '../../actions/compileAction';
 import 'brace/ext/language_tools';
 
@@ -56,6 +56,7 @@ class Layout extends Component {
     }
 
     setMode(e) {
+        const languageTemplates = getLanguageTemplates()
         this.setState({ mode: e.target.value });
         this.setState({ value: [languageTemplates[e.target.value], this.state.value[1]] })
     }
@@ -104,11 +105,34 @@ class Layout extends Component {
         const targets = document.getElementsByClassName('ace_editor')
         const target = targets[2]
         target.classList.add('disable-div')
-        const defaultValue = [
-            `const welcome = 'Hello World!';\nconsole.log(welcome);`,
-            this.props.compiled.result || 'Output: Hello World!'
-        ];
-        this.setState({ value: defaultValue })
+        const languageTemplates = getLanguageTemplates()
+        let settings = localStorage.getItem('settings')
+        let cache = localStorage.getItem('languageTemplates'), defaultValue
+        if (!cache) {
+            cache = JSON.parse(cache)
+            defaultValue = [
+                languageTemplates && languageTemplates[this.state.mode]
+                    ? languageTemplates[this.state.mode]
+                    : `const welcome = 'Hello World!';\nconsole.log(welcome);`,
+                this.props.compiled.result || `${cache && cache.javascript ? 'Output: ' : 'Output: Hello World!'}`
+            ]
+        } else {
+            cache = JSON.parse(cache)
+            settings = JSON.parse(settings)
+            const mode = settings.mode ? settings.mode : this.state.mode
+            defaultValue = [
+                languageTemplates && languageTemplates[mode]
+                    ? languageTemplates[mode]
+                    : `const welcome = 'Hello World!';\nconsole.log(welcome);`,
+                this.props.compiled.result || `${cache.javascript ? 'Output: ' : 'Output: Hello World!'}`
+            ]
+        }
+        if (settings) {
+            settings = typeof settings === 'string' ? JSON.parse(settings) : settings
+            this.setState({ ...settings })
+
+        }
+        this.setState({ value: defaultValue }, () => this.handleCompile())
         this.setState({ loading: this.props.compiled.loading })
     }
 
@@ -124,6 +148,22 @@ class Layout extends Component {
 
     handleCompile() {
         this.setState({ loading: true })
+        let cached = localStorage.getItem('languageTemplates'), cachedTemplates = {}
+        if (cached) {
+            cached = JSON.parse(cached)
+            cachedTemplates = { ...cached }
+            cachedTemplates[this.state.mode] = this.state.value[0]
+            localStorage.setItem('languageTemplates', JSON.stringify(cachedTemplates))
+        } else {
+            cachedTemplates[this.state.mode] = this.state.value[0]
+            localStorage.setItem('languageTemplates', JSON.stringify(cachedTemplates))
+        }
+        const settings = {
+            mode: this.state.mode,
+            theme: this.state.theme,
+            orientation: this.state.orientation
+        }
+        localStorage.setItem('settings', JSON.stringify(settings))
         this.setState({ hasSaved: true })
         setTimeout(() => this.setState({ hasSaved: false }), 3000)
         this.props.compileCode({ language: this.state.mode, syntax: this.state.value[0] })
@@ -267,7 +307,7 @@ class Layout extends Component {
                 </div>
                 <div className='examples column'>
                     <div className='text-center'>
-                        <button onClick={this.handleCompile} className='button is-primary is-rounded'>
+                        <button id="runButton" onClick={this.handleCompile} className='button is-primary is-rounded'>
                             <span className='text-bold'>Run</span>
                             <span className='icon is-small'>
                                 <i className='fas fa-check'></i>
