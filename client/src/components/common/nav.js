@@ -10,6 +10,20 @@ class Nav extends Component {
                             <img src="https://image.flaticon.com/icons/svg/1410/1410345.svg" alt="logo" width="30" height="30" />
                             <b className="nav-title">ByteMarshall</b>
                         </a>
+                        <div id="navbarBasicExample" class="navbar-menu text-right">
+                            <button className="button is-primary">
+                                <span>Login</span>
+                                <span class="icon">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                </span>
+                            </button>
+                            <button className="button is-info shift-right">
+                                <span>Signup</span>
+                                <span class="icon">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </span>
+                            </button>
+                        </div>
                         <a href="/" role="button" className="navbar-burger" aria-label="menu" aria-expanded="false">
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>

@@ -37,7 +37,35 @@ themes.forEach(theme => {
     require(`brace/theme/${theme}`);
 });
 
-class Layout extends Component {
+class ByteMarshallEditor extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            splits: 2,
+            orientation: 'beside',
+            value: [],
+            theme: 'solarized_dark',
+            mode: 'javascript',
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            laoding: false,
+            fontSize: 14,
+            showGutter: true,
+            showPrintMargin: true,
+            highlightActiveLine: true,
+            enableSnippets: true,
+            showLineNumbers: true,
+            useWorker: false,
+            hasSaved: false
+        };
+        this.setTheme = this.setTheme.bind(this);
+        this.setMode = this.setMode.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.setBoolean = this.setBoolean.bind(this);
+        this.setOrientation = this.setOrientation.bind(this);
+        this.handleCompile = this.handleCompile.bind(this)
+    }
+    
     onLoad(editor) {
         const sp = editor.$editors[1]
         sp.getSession().setUseWorker(false);
@@ -71,34 +99,6 @@ class Layout extends Component {
         this.setState({
             orientation: e.target.value,
         });
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            splits: 2,
-            orientation: 'beside',
-            value: [],
-            theme: 'solarized_dark',
-            mode: 'javascript',
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            laoding: false,
-            fontSize: 14,
-            showGutter: true,
-            showPrintMargin: true,
-            highlightActiveLine: true,
-            enableSnippets: true,
-            showLineNumbers: true,
-            useWorker: false,
-            hasSaved: false
-        };
-        this.setTheme = this.setTheme.bind(this);
-        this.setMode = this.setMode.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.setBoolean = this.setBoolean.bind(this);
-        this.setOrientation = this.setOrientation.bind(this);
-        this.handleCompile = this.handleCompile.bind(this)
     }
 
     componentDidMount() {
@@ -349,7 +349,7 @@ class Layout extends Component {
     }
 }
 
-Layout.propTypes = {
+ByteMarshallEditor.propTypes = {
     compileCode: PropTypes.func.isRequired,
     compiled: PropTypes.object.isRequired
 };
@@ -358,4 +358,6 @@ const mapStateToProps = state => ({
     compiled: state.compiled
 });
 
-export default connect(mapStateToProps, { compileCode })(Layout)
+const Editor = connect(mapStateToProps, { compileCode })(ByteMarshallEditor)
+
+export { Editor }

@@ -1,21 +1,26 @@
-FROM node:8
+FROM node:10-alpine
 
-# Install app dependencies & Install python
-RUN apt-get install python
+# Install Python
+RUN apk add --update \
+    python \
+    python-dev \
+    py-pip \
+    build-base \
+  && pip install virtualenv \
+  && rm -rf /var/cache/apk/*
 
-RUN cho "installing go version 1.10.3..." \
-    apk add --no-cache --virtual .build-deps bash gcc musl-dev openssl go \
-    wget -O go.tgz https://dl.google.com/go/go1.10.3.src.tar.gz \
-    tar -C /usr/local -xzf go.tgz \
-    cd /usr/local/go/src/ \
-    ./make.bash \
-    export PATH="/usr/local/go/bin:$PATH" \
-    export GOPATH=/opt/go/ \
-    export PATH=$PATH:$GOPATH/bin \ 
-    apk del .build-deps \
-    go version
+# Install Go
+RUN apk add --no-cache git make musl-dev go
 
-# https://github.com/mickep76/alpine-golang/blob/master/Dockerfile
+# Configure Go
+ENV GOROOT /usr/lib/go
+ENV GOPATH /go
+ENV PATH /go/bin:$PATH
+
+RUN mkdir -p ${GOPATH}/src ${GOPATH}/bin
+
+# Install Glide
+RUN go get -u github.com/Masterminds/glide/...
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -24,6 +29,7 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY package.json ./
 
+# Install app dependencies
 RUN npm install
 # If you are building your code for production
 # RUN npm install --only=production
