@@ -334,7 +334,6 @@ class Layout extends Component {
                         showGutter={this.state.showGutter}
                         highlightActiveLine={this.state.highlightActiveLine}
                         value={this.state.value}
-                        scrollPastEnd={true}
                         setOptions={{
                             displayIndentGuides: false,
                             enableBasicAutocompletion: this.state.enableBasicAutocompletion,
