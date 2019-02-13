@@ -151,3 +151,7 @@ figure.image {
     text-align: right;
     margin-top: -1%;
 }
+
+.is-fluid {
+    margin-left: 3%;
+}

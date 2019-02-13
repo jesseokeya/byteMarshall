@@ -17,7 +17,7 @@ const ByteMarshallEditor = (props) => (
   <div>
     <Nav {...props}/>
     <br />
-    <div className="container">
+    <div className="container is-fluid">
       <Editor {...props}/>
     </div>
   </div>

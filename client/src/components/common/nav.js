@@ -11,13 +11,13 @@ class Nav extends Component {
                             <b className="nav-title">ByteMarshall</b>
                         </a>
                         <div id="navbarBasicExample" className="navbar-menu text-right">
-                            <button className="button is-primary">
+                            <a className="button is-primary" href="#open-modal">
                                 <span>Login</span>
                                 <span className="icon">
                                     <i className="fas fa-sign-in-alt"></i>
                                 </span>
-                            </button>
-                            <button className="button is-info shift-right">
+                            </a>
+                            <button className="button is-info shift-right" onClick={this.OpenModal}>
                                 <span>Signup</span>
                                 <span className="icon">
                                     <i className="fas fa-sign-out-alt"></i>

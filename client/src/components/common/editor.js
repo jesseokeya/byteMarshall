@@ -77,6 +77,7 @@ class ByteMarshallEditor extends Component {
     }
 
     onChange(newValue) {
+        this.refs.reactAceComponent.editor.resize()
         this.setState({
             value: newValue,
         }, _ => socket.emit('stateChanged', { ...this.state }))
@@ -340,8 +341,8 @@ class ByteMarshallEditor extends Component {
                         onChange={this.onChange}
                         fontSize={this.state.fontSize}
                         useWorker={this.state.useWorker}
-                        height='80vw'
-                        width='80vw'
+                        height='150vh'
+                        width={window.innerWidth <= 769 ? '95vw' : '80vw'}
                         showPrintMargin={this.state.showPrintMargin}
                         showGutter={this.state.showGutter}
                         highlightActiveLine={this.state.highlightActiveLine}
@@ -352,7 +353,7 @@ class ByteMarshallEditor extends Component {
                             enableLiveAutocompletion: this.state.enableLiveAutocompletion,
                             enableSnippets: this.state.enableSnippets,
                             showLineNumbers: this.state.showLineNumbers,
-                            tabSize: 2,
+                            tabSize: 10,
                         }}
                     />
                 </div>
