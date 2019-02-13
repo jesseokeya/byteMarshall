@@ -1,0 +1,26 @@
+sudo: required
+services:
+  - docker
+before_install:
+  - docker build -t bytemarshall -f ./Dockerfile .
+script:
+  - docker run bytemarshall npm test -- --coverage
+cache:
+  directories:
+    - "$HOME/google-cloud-sdk/"
+after_success:
+  - openssl enc -in serviceAccount.json.enc -out serviceAccount.json -d -aes256 -k $SECRET_KEY
+  - openssl enc -in .env.enc -out .env -d -aes256 -k $SECRET_KEY
+  - gcloud version || true
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+  - source /home/travis/google-cloud-sdk/path.bash.inc
+  - gcloud auth activate-service-account --key-file serviceAccount.json
+  - gcloud config set project bytemarshall
+  - gcloud config set compute/zone us-central1-a
+  - bash ./deploy.sh
+notifications:
+  email:
+    recipients:
+      - jesseokeya@gmail.com
+    on_success: always
+    on_failure: always

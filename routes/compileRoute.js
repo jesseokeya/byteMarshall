@@ -25,15 +25,9 @@ class CompileRouter extends Router {
         } catch (err) {
             ctx.body = {
                 code: 0,
-                stderr: err.toString() || '',
-                stdout: err.toString() || ''
+                stderr: err.toString() || ''
             }
-            console.log(err)
-            console.log({
-                code: 0,
-                stderr: err.toString() || '',
-                stdout: err.toString() || ''
-            })
+            throw err
         }
     }
 }
