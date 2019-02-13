@@ -73,11 +73,10 @@ class ByteMarshallEditor extends Component {
 
     onLoad(editor) {
         const sp = editor.$editors[1]
-        sp.getSession().setUseWorker(false);
+        sp.getSession().setUseWorker(false)
     }
 
     onChange(newValue) {
-        this.refs.reactAceComponent.editor.resize()
         this.setState({
             value: newValue,
         }, _ => socket.emit('stateChanged', { ...this.state }))
@@ -338,7 +337,7 @@ class ByteMarshallEditor extends Component {
                         name='target'
                         onLoad={this.onLoad}
                         debounceChangePeriod={1000}
-                        onChange={this.onChange}
+                        onChange={(newValue) => this.onChange(newValue)}
                         fontSize={this.state.fontSize}
                         useWorker={this.state.useWorker}
                         height='150vh'
