@@ -1,5 +1,8 @@
 FROM node:10-alpine
 
+# Create app directory
+WORKDIR /usr/src/app
+
 # Install Python
 RUN apk add --update \
     python \
@@ -22,9 +25,6 @@ RUN mkdir -p ${GOPATH}/src ${GOPATH}/bin
 # Install Glide
 RUN go get -u github.com/Masterminds/glide/...
 
-# Create app directory
-WORKDIR /usr/src/app
-
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY package.json ./
@@ -32,10 +32,10 @@ COPY package.json ./
 # Install app dependencies
 RUN npm install
 
+RUN cd ./util/go; npm install; cd ../../
+
 # Bundle app source
 COPY . .
-
-RUN cd ./util/go; npm install; cd ../../
 
 EXPOSE 8080
 
