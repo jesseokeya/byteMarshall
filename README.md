@@ -7,7 +7,7 @@
 
 One to two paragraph statement about your product and what it does.
 
-![](/images/record.gif)
+![](/images/screenshot.png)
 
 ## Installation
 
