@@ -30,8 +30,18 @@ app.use(json())
 app.use(bodyParser())
 router(app)
 
+app.use(async (ctx, next) => {
+    const validRoutes = ['/', '/editor']
+    const url = ctx.request.url.toLowerCase()
+    if (url.includes('/editor')) {
+        return ctx.response.redirect('/?to=editor')
+    } else {
+        await next()
+    }
+})
+
 app.use(serve(__dirname + '/client/build/'))
-app.use(async (ctx) => await send(ctx, ctx.path, { root: __dirname + '/client/build/' }))
+app.use(async ctx => await send(ctx, ctx.path, { root: __dirname + '/client/build/' }))
 
 
 const message = `🚀  ${environment} server ready at http://localhost:${PORT}`

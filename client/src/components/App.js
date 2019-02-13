@@ -6,19 +6,19 @@ import { Nav, Editor, Landing } from './common'
 
 import '../styles/app.css'
 
-const LandingPage = () => (
+const LandingPage = (props) => (
   <div>
-    <Nav />
-    <Landing />
+    <Nav {...props}/>
+    <Landing {...props}/>
   </div>
 )
 
-const ByteMarshallEditor = () => (
+const ByteMarshallEditor = (props) => (
   <div>
-    <Nav />
+    <Nav {...props}/>
     <br />
     <div className="container">
-      <Editor />
+      <Editor {...props}/>
     </div>
   </div>
 )

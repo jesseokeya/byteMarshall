@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom'
 import '../../styles/app.css'
 
 class Landing extends Component {
+    componentDidMount() {
+        const urlParams = new URLSearchParams(window.location.search)
+        const query = urlParams.get('to')
+        if (query && query.length > 0) {
+            this.props.history.push(`/${query}`)
+        }
+    }
+
     render() {
         return (
             <div className="content-wrapper">
@@ -22,8 +30,8 @@ class Landing extends Component {
                                     <figure className="image">
                                         <Link to={'/editor'} href="/" className="button is-primary is-large is-outlined">
                                             <span>View Editor</span>
-                                            <span class="icon">
-                                                <i class="fas fa-arrow-right"></i>
+                                            <span className="icon">
+                                                <i className="fas fa-arrow-right"></i>
                                             </span>
                                         </Link>
                                     </figure>
