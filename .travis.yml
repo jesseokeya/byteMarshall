@@ -4,7 +4,6 @@ services:
 before_install:
   - docker build -t bytemarshall -f ./Dockerfile .
 script:
-  - cd util/go; npm install; cd ../../
   - docker run bytemarshall npm test -- --coverage
 cache:
   directories:

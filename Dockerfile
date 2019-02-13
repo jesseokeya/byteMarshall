@@ -31,8 +31,10 @@ COPY package.json ./
 
 # Install app dependencies
 RUN npm install
-# If you are building your code for production
-# RUN npm install --only=production
+
+RUN cd util/go \ 
+    npm install \
+    cd ../../
 
 # Bundle app source
 COPY . .
