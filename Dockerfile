@@ -32,10 +32,10 @@ COPY package.json ./
 # Install app dependencies
 RUN npm install
 
-RUN cd ./util/go; npm install; cd ../../
-
 # Bundle app source
 COPY . .
+
+RUN cd ./util/go; npm install; cd ../../
 
 EXPOSE 8080
 
