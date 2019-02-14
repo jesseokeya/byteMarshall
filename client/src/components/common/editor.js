@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { isEmpty } from 'lodash'
 import { split as SplitAceEditor } from 'react-ace';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -107,19 +108,34 @@ class ByteMarshallEditor extends Component {
     }
 
     componentDidMount() {
+        const urlParams = new URLSearchParams(window.location.search)
+        const session = urlParams.get('session')
+        if (session && session.length > 0) {
+            this.setState({ session })
+        } else {
+            this.props.history.push(`/editor?session=${localStorage.getItem('session')}`)
+        }
         const targets = document.getElementsByClassName('ace_editor')
         const target = targets[2]
-        target.classList.add('disable-div')
+        if (target) {
+            target.classList.add('disable-div')
+        }
         const languageTemplates = getLanguageTemplates()
         let settings = localStorage.getItem('settings')
         let cache = localStorage.getItem('languageTemplates'), defaultValue
+        let result = this.props.compiled.result || ''
+        if (!isEmpty(result)) {
+            if (this.props.compiled.result.stdout) {
+                result = this.props.compiled.result.stdout
+            }
+        }
         if (!cache) {
             cache = JSON.parse(cache)
             defaultValue = [
                 languageTemplates && languageTemplates[this.state.mode]
                     ? languageTemplates[this.state.mode]
                     : `const welcome = 'Hello World!';\nconsole.log(welcome);`,
-                this.props.compiled.result || `${cache && cache.javascript ? 'Output: ' : 'Output: Hello World!'}`
+                result || `${cache && cache.javascript ? 'Output: ' : 'Output: Hello World!'}`
             ]
         } else {
             cache = JSON.parse(cache)
@@ -129,7 +145,7 @@ class ByteMarshallEditor extends Component {
                 languageTemplates && languageTemplates[mode]
                     ? languageTemplates[mode]
                     : `const welcome = 'Hello World!';\nconsole.log(welcome);`,
-                this.props.compiled.result || `${cache.javascript ? 'Output: ' : 'Output: Hello World!'}`
+                result || `${cache.javascript ? 'Output: ' : 'Output: Hello World!'}`
             ]
         }
         if (settings) {
@@ -143,13 +159,15 @@ class ByteMarshallEditor extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: nextProps.compiled.loading })
-        const output = nextProps.compiled.result.stdout && nextProps.compiled.result.stdout.length > 0
+        const output = nextProps.compiled.result && nextProps.compiled.result.stdout && nextProps.compiled.result.stdout.length > 0
             ? `Output: ${nextProps.compiled.result.stdout}`
-            : `${nextProps.compiled.result.stderr || 'Something went wrong!. Check your syntax'}`
-        this.setState({ value: [this.state.value[0], output] }, _ => { 
-            socket.emit('stateChanged', { ...this.state }) 
+            : `${nextProps.compiled.result && nextProps.compiled.result.stderr ? nextProps.compiled.result.stderr : 'Something went wrong!. Check your syntax'}`
+        this.setState({ value: [this.state.value[0], output] }, _ => {
+            socket.emit('stateChanged', { ...this.state })
             socket.on('updateState', state => {
-                this.setState({ ...state, loading: false, hasSaved: false })
+                if (state.session && this.state.session && state.session === this.state.session) {
+                    this.setState({ ...state, loading: false, hasSaved: false })
+                }
             })
         })
     }
@@ -329,7 +347,7 @@ class ByteMarshallEditor extends Component {
                         {this.state.hasSaved && this.notifyUser()}
                     </div>
                     <h2 className='text-bold'>Editor</h2>
-                    <SplitAceEditor
+                    {this.state.value && this.state.value.length > 0 && <SplitAceEditor
                         mode={this.state.mode}
                         orientation={this.state.orientation}
                         splits={this.state.splits}
@@ -354,7 +372,7 @@ class ByteMarshallEditor extends Component {
                             showLineNumbers: this.state.showLineNumbers,
                             tabSize: 10,
                         }}
-                    />
+                    />}
                 </div>
             </div>
         );

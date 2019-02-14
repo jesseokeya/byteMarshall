@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Provider } from "react-redux";
+import { Provider } from 'react-redux';
+import uid from 'unique-string';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import store from '../store';
 import { Nav, Editor, Landing } from './common'
@@ -24,6 +25,13 @@ const ByteMarshallEditor = (props) => (
 )
 
 class App extends Component {
+  componentDidMount() {
+    const session = localStorage.getItem('session')
+    if (!session) {
+      localStorage.setItem('session', uid())
+    }
+  }
+
   render() {
     return (
       <Provider store={store}>

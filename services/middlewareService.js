@@ -19,7 +19,7 @@ class MiddlewareService {
 
     async _decodeToken(ctx) { 
         try {
-
+            const headers = ctx.request.header
         } catch(err) {
             throw err
         }
