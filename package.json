@@ -10,7 +10,7 @@
     "start": "npm run server",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "deploy": "cd client; npm run build; cd ..; git add .; git commit -m 'changes'; git push"
-  }, 
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jesseokeya/byteMarshall.git"
@@ -31,6 +31,7 @@
   "dependencies": {
     "concurrently": "^4.1.0",
     "dotenv": "^6.2.0",
+    "jsonwebtoken": "^8.4.0",
     "jwt-decode": "^2.2.0",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
