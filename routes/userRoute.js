@@ -11,11 +11,13 @@ class UserRouter extends Router {
     init(app) {
         const io = new IO()
         this.prefix(process.env.PREFIX)
-        this.post('/login', ctx => this.login(ctx))
-        this.post('/signup', ctx => this.signup(ctx))
-        this.post('/cache', ctx => this.createCache(ctx))
-        this.put('/cache', ctx => this.updateCache(ctx))
-        this.get('/cache/:id', ctx => this.getCache(ctx))
+        this.get('/users/', ctx => this.getUsers(ctx))
+        this.get('/user/:id', ctx => this.getUsers(ctx))
+        this.post('/login/', ctx => this.login(ctx))
+        this.post('/signup/', ctx => this.signup(ctx))
+        this.post('/users/', ctx => this.createUser(ctx))
+        this.patch('/users/', ctx => this.updateUser(ctx))
+        this.delete('/users/:id', ctx => this.deleteUser(ctx))
         app.use(this.routes())
         app.use(this.allowedMethods())
         app = io.attach(app)
@@ -26,11 +28,13 @@ class UserRouter extends Router {
 
     async signup(ctx) {}
 
-    async getCache(ctx) {}
+    async getUser(ctx) {}
 
-    async createCache(ctx) {}
+    async getUsers(ctx) {}
 
-    async updateCache(ctx) {}
+    async createUser(ctx) {}
+
+    async updateUser(ctx) {}
 
     async _handleEvents(io) {
         io.on('connection', ctx => {
