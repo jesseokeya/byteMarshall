@@ -7,7 +7,7 @@ class MiddlewareService {
         try {
             const url = ctx.request.url.toLowerCase()
             if (url.includes('/editor')) {
-                return ctx.response.redirect('/?to=editor')
+                return ctx.response.redirect(`/?to=${url}`)
             } else {
                 await this._decodeToken(ctx)
                 await next()

@@ -7,7 +7,7 @@ class Landing extends Component {
         const urlParams = new URLSearchParams(window.location.search)
         const query = urlParams.get('to')
         if (query && query.length > 0) {
-            this.props.history.push(`/${query}`)
+            this.props.history.push(`${query}`)
         }
     }
 
