@@ -1,10 +1,10 @@
-const Router = require('koa-router');
+const Router = require('koa-router')
 
 class CompileRouter extends Router {
     constructor(options = {}) {
         super()
         this.options = options
-        this.compileService = new options.CompileService()
+        this.compileService = options.compileService
     }
 
     init(app) {

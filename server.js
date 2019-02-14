@@ -17,6 +17,9 @@ const router = require('./routes')
 
 const PORT = process.env.PORT || 8080
 const environment = process.env.NODE_ENV || 'Production'
+const { MiddlewareService } = require('./services')
+
+const middlewareService = new MiddlewareService()
 
 mongoose.connect(process.env.MONGO_URI, { useCreateIndex: true, useNewUrlParser: true })
 mongoose.Promise = global.Promise;
@@ -30,17 +33,10 @@ app.use(json())
 app.use(bodyParser())
 router(app)
 
-app.use(async (ctx, next) => {
-    const validRoutes = ['/', '/editor']
-    const url = ctx.request.url.toLowerCase()
-    if (url.includes('/editor')) {
-        return ctx.response.redirect('/?to=editor')
-    } else {
-        await next()
-    }
-})
-
 app.use(serve(__dirname + '/client/build/'))
+
+app.use(async (ctx, next) => await middlewareService.handleAuth(ctx, next))
+
 app.use(async ctx => await send(ctx, ctx.path, { root: __dirname + '/client/build/' }))
 
 

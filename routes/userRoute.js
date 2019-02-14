@@ -5,17 +5,32 @@ class UserRouter extends Router {
     constructor(options = {}) {
         super()
         this.options = options
-        // this.userService = new options.UserService()
+        this.userService = options.userService
     }
 
     init(app) {
         const io = new IO()
         this.prefix(process.env.PREFIX)
+        this.post('/login', ctx => this.login(ctx))
+        this.post('/signup', ctx => this.signup(ctx))
+        this.post('/cache', ctx => this.createCache(ctx))
+        this.put('/cache', ctx => this.updateCache(ctx))
+        this.get('/cache/:id', ctx => this.getCache(ctx))
         app.use(this.routes())
         app.use(this.allowedMethods())
         app = io.attach(app)
         this._handleEvents(io)
     }
+
+    async login(ctx) {}
+
+    async signup(ctx) {}
+
+    async getCache(ctx) {}
+
+    async createCache(ctx) {}
+
+    async updateCache(ctx) {}
 
     async _handleEvents(io) {
         io.on('connection', ctx => {
