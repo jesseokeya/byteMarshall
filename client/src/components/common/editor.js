@@ -78,9 +78,11 @@ class ByteMarshallEditor extends Component {
     }
 
     onChange(newValue) {
-        this.setState({
-            value: newValue,
-        }, _ => socket.emit('stateChanged', { ...this.state }))
+        if (newValue.join().trim() !== this.state.value.join().trim()) {
+            this.setState({
+                value: newValue,
+            }, _ => socket.emit('stateChanged', { ...this.state }))
+        }
     }
 
     setTheme(e) {
