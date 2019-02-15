@@ -5,6 +5,7 @@ class MiddlewareService {
 
     async handleAuth(ctx, next) {
         try {
+            ctx.state.user = {}
             const url = ctx.request.url.toLowerCase()
             if (url.includes('/editor')) {
                 return ctx.response.redirect(`/?to=${url}`)

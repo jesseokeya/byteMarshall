@@ -370,7 +370,7 @@ class ByteMarshallEditor extends Component {
                             enableLiveAutocompletion: this.state.enableLiveAutocompletion,
                             enableSnippets: this.state.enableSnippets,
                             showLineNumbers: this.state.showLineNumbers,
-                            tabSize: 10,
+                            tabSize: 2,
                         }}
                     />}
                 </div>
