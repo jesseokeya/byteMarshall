@@ -166,7 +166,7 @@ class ByteMarshallEditor extends Component {
             socket.emit('stateChanged', { ...this.state })
             socket.on('updateState', state => {
                 if (state.session && this.state.session && state.session === this.state.session) {
-                    this.setState({ ...state, loading: false, hasSaved: false })
+                    this.setState({ ...state, loading: false, hasSaved: false }, this.updateStore)
                 }
             })
         })
