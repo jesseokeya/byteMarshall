@@ -50,11 +50,11 @@ class Nav extends Component {
                             <img src="/favicon.ico" alt="logo" width="35" height="80" />
                         </Link>
 
-                        <a type="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                        <Link to="#" type="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
-                        </a>
+                        </Link>
                     </div>
 
                     <div id="navbarBasicExample" className="navbar-menu">
@@ -62,7 +62,7 @@ class Nav extends Component {
                             <Link to="/" className="navbar-item">
                                 Home
                         </Link>
-                            <Link to="/editor" className="navbar-item">
+                            <Link to={`/editor?session=${localStorage.getItem('session')}`} className="navbar-item">
                                 Editor
                         </Link>
                         </div>
