@@ -7,6 +7,8 @@
 
 Go to `/editor` path and it generates a session for you copy that url and share it with whoever your collaborating with
 
+![](/images/demo.gif)
+
 ![](/images/screenshot.png)
 
 ## Installation
