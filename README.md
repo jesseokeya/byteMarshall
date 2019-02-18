@@ -5,7 +5,8 @@
 [![Build Status][travis-image]][travis-url]
 [![Downloads Stats][npm-downloads]][npm-url]
 
-Go to `/editor` path and it generates a session for you copy that url and share it with whoever your collaborating with
+Go to `/editor` path and it generates a session for you copy that url and share it with whoever your collaborating with.
+[https://bytemarshall.appspot.com/editor](https://bytemarshall.appspot.com/editor)
 
 ![](/images/demo.gif)
 
