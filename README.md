@@ -1,11 +1,11 @@
 # ByteMarshall
-> Short blurb about what your product does.
+> A realtime collaborative runtime environment for your favourite programming languages
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Downloads Stats][npm-downloads]][npm-url]
 
-One to two paragraph statement about your product and what it does.
+Go to `/editor` path and it generates a session for you copy that url and share it with whoever your collaborating with
 
 ![](/images/screenshot.png)
 
