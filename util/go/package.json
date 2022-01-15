@@ -38,7 +38,7 @@
   "bundleDependencies": false,
   "dependencies": {
     "hasbin": "^1.2.3",
-    "shelljs": "^0.7.8",
+    "shelljs": "^0.8.5",
     "write": "^1.0.1"
   },
   "deprecated": false,
